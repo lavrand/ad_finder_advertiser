@@ -13,8 +13,8 @@ bot.start((ctx) => ctx.reply('Welcome'));
 
 bot.on('text', async (ctx) => {
     const keyboard = Keyboard.make([
-        ['Button 1', 'Button 2'], // First row
-        ['Button 3', 'Button 4'], // Second row
+        ['Профиль', 'Разместить'], // First row
+        ['Найти', 'Геолокация'], // Second row
     ]);
 
     try {
