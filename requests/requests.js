@@ -7,6 +7,7 @@ const URL = process.env.URL;
 
 export const sendRequest = async (options) => {
     const {path, body={}, method='GET', ctx=null} = options;
+    console.log('>>>', path);
     let headers = {};
     if (ctx) {
         headers['telegram_id'] = getMessageSenderId(ctx)
@@ -33,5 +34,10 @@ export const fetchUser = async (ctx) => {
 
 export const fetchBranches = async (ctx) => {
     const response = await sendRequest({path: 'branch', ctx});
+    return response;
+}
+
+export const fetchServices = async (ctx, branchId) => {
+    const response = await sendRequest({path: `service/${branchId}`, ctx});
     return response;
 }
