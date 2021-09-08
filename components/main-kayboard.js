@@ -1,23 +1,20 @@
-const {botCommands} = require("../consts/commands");
-const {_} = require('../translation/translation')
-const { Keyboard } = require('telegram-keyboard');
+import {botCommands} from "../consts/commands.js"
+import {_} from '../translation/translation.js'
+import { Keyboard } from 'telegram-keyboard'
 
-module.exports = () => {
+export default () => {
     const keyboard = Keyboard.make([
         [
             {
-                text: _('Profile'),
-                callback_data: '>>>>>>>>>>>',
+                text: 'Profile',
             },
             {
-                text: _('Разместить'),
-                callback_data: botCommands.placeAd,
+                text: 'Place',
             }
         ],
         [
             {
-                text: _('Найти'),
-                callback_data: botCommands.findAd,
+                text: 'Find',
             },
         ],
     ]);
