@@ -8,6 +8,7 @@ import {getActionData, getMessageChat} from "./utils/ctxHandlers.js"
 import {getMessageSender, getMessageText} from "./utils/ctxHandlers.js"
 import {MenuTemplate, MenuMiddleware} from "telegraf-inline-menu"
 import {_} from './translation/translation.js'
+import {createAction, getActionParam, isAction} from "./utils/actions.js";
 
 const env = process.env;
 const bot = new Telegraf(env.TOKEN);
@@ -30,7 +31,9 @@ bot.command('start', async (ctx) => {
 bot.hears('🔍 Search', async (ctx) => {
     const branches = await fetchBranches();
     const branchNames = branches.map(b => {
-        return Markup.button.callback(b.name, `gotobranch-${b.id}`)
+        console.log(createAction('branch', b._id))
+        console.log(b)
+        return Markup.button.callback(b.name, createAction('branch', b._id))
     });
     return await ctx.reply('Branches', Markup
         .inlineKeyboard(branchNames)
@@ -39,16 +42,18 @@ bot.hears('🔍 Search', async (ctx) => {
     )
 })
 
-bot.action(/gotobranch-.*/, async ctx => {
+bot.action(isAction('branch'), async ctx => {
+    console.log('BRANCH', getActionParam(getActionData(ctx)))
     const actionData = getActionData(ctx);
     console.log('actionData:', actionData);
+    console.log(ctx);
     const branchId = getSecondPart(actionData);
-    console.log('branchId:', branchId);
+    // console.log('branchId:', branchId);
     const branches = await fetchServices(ctx, branchId);
     const branchNames = branches.map(b => {
-        return Markup.button.callback(b.name, `gotobranch-${b.id}`)
+        return Markup.button.callback(b.name, createAction('servicebybranch', b._id))
     });
-    console.log('branchNames:', branchNames);
+    // console.log('branchNames:', branchNames);
     return await ctx.reply('Services', Markup
         .inlineKeyboard(branchNames)
         .oneTime()

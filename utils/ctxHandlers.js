@@ -5,10 +5,3 @@ export const getMessageSenderId = (ctx) => getMessageSender(ctx)?.id;
 export const getMessageChat = (ctx) => getMessage(ctx)?.chat;
 export const getActionData = (ctx) => ctx.update?.callback_query?.data;
 
-// module.exports = {
-//     getMessage: getMessage,
-//     getMessageText: getMessageText,
-//     getMessageSender: getMessageSender,
-//     getMessageChat: getMessageChat,
-//     getMessageSenderId: getMessageSenderId,
-// }
