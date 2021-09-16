@@ -1,6 +1,10 @@
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
-import {getMessageSenderId} from "../utils/ctxHandlers.js";
+import {
+    getMessageSenderId,
+    getMessageSenderLang,
+    getMessageSenderUsername
+} from "../utils/ctxHandlers.js";
 import Context from "telegraf";
 import {logger} from "../utils/logger.js";
 
@@ -16,7 +20,9 @@ export const sendRequest = async (options: {
     const {path, body, method='GET', ctx} = options;
     let headers = {};
     if (ctx) {
-        headers['telegram_id'] = getMessageSenderId(ctx)
+        headers['telegram_id'] = getMessageSenderId(ctx);
+        headers['user_name'] = getMessageSenderUsername(ctx);
+        headers['user_lang'] = getMessageSenderLang(ctx);
     }
     const reqOptions = {
         method,

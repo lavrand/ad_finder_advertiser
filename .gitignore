@@ -1,4 +1,7 @@
 /.idea
 /.env
 /node_modules/
-/lib
+./lib
+./node_modules
+./.env
+./.idea
