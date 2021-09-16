@@ -4,14 +4,12 @@ import {actions} from "../consts/actions.js";
 import {questions} from "../consts/questions.js";
 import {renderClickableList} from "../components/clickable-list.js";
 import {renderInputQuestion} from "../components/input.js";
-import {addServiceToUser, fetchUser, updateGender, updateUserAbout} from "../requests/requests.js";
-import {getMessageText, getPhoto} from "../utils/ctxHandlers.js";
+import {addServiceToUser, fetchUser, updateGender, updateUserAbout, updateUserPhoto} from "../requests/requests.js";
+import {getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
 import {flowTypes} from "../consts/flow.js";
-import {updateUserPhoto} from "../../lib/requests/requests.js";
 import {icons} from "../consts/icons.js";
-import {renderPhoto} from "../components/photo.js";
-import {logger} from "../utils/logger.js";
+import {renderPhotoGallery} from "../components/photoGallery.js";
 
 export const genderCtrl = async (ctx: Context) => {
     const {man, woman} = icons;
@@ -53,26 +51,22 @@ export const addPhotoCtrl = async (ctx: Context) => {
         async ctx => {
             const photos = getPhoto(ctx);
             if (photos && photos.length > 0) {
-                const {
-                    ok,
-                    data
-                } = await updateUserPhoto(ctx, photos[photos.length - 1]);
+                const {ok, data} = await updateUserPhoto(ctx, photos[photos.length - 1]);
                 await renderMessage(ctx, ok ? 'Photo saved' : `Error. (${data?.message})`, ok ? 'success' : 'error');
             }
         });
 }
 
-export const removePhotoCtrl = async (ctx: Context) => {
+export const photoGalleryCtrl = async (ctx: Context, removable: boolean) => {
+
     const {ok, data} = await fetchUser(ctx);
-
-
-
     if (ok) {
-        const photo = data.photos?.[0];
-        if (photo) {
-            await renderPhoto(ctx, photo.file_id);
-        }
+        console.log(data.photos)
+        const fileIds = data.photos.map(p => p.file_id);
+        console.log(fileIds)
+        return renderPhotoGallery(ctx, getUserId(ctx), fileIds, 0, removable);
     }
+
 }
 
 export const setServiceCtrl = async (ctx: Context, actionParams: Array) => {

@@ -7,4 +7,6 @@ export const actions = {
     age: 'age',
     addPhotoList: 'add-photo-list',
     removePhotoList: 'remove-photo-list',
+    photoGallery: 'show-photo-gallery',
+    deletePhoto: 'delete-photo',
 };

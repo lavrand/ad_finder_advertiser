@@ -19,7 +19,7 @@ import {
     setGenderCtrl,
     addPhotoCtrl,
     userPhotoCtrl,
-    removePhotoCtrl,
+    photoGalleryCtrl,
 } from "./controllers/userControllers.js";
 import {servicesCtrl} from "./controllers/serviceControllers.js";
 import {logger} from "./utils/logger.js";
@@ -58,7 +58,7 @@ bot.action(/.*/, async (ctx: Context) => {
     if (actionName === actions.selectService) return await setServiceCtrl(ctx, actionParams)
     if (actionName === actions.gender) return await setGenderCtrl(ctx, actionParams);
     if (actionName === actions.addPhotoList) return await addPhotoCtrl(ctx, actionParams);
-    if (actionName === actions.removePhotoList) return await removePhotoCtrl(ctx, actionParams);
+    if (actionName === actions.removePhotoList) return await photoGalleryCtrl(ctx, true);
 })
 
 bot.on('message', (ctx: Context) => {
