@@ -4,7 +4,14 @@ import {actions} from "../consts/actions.js";
 import {questions} from "../consts/questions.js";
 import {renderClickableList} from "../components/clickable-list.js";
 import {renderInputQuestion} from "../components/input.js";
-import {addServiceToUser, fetchUser, updateGender, updateUserAbout, updateUserPhoto} from "../requests/requests.js";
+import {
+    addServiceToUser,
+    fetchUser,
+    updateGender,
+    updateUserAbout,
+    updateUserBirthday,
+    updateUserPhoto
+} from "../requests/requests.js";
 import {getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
 import {flowTypes} from "../consts/flow.js";
@@ -89,4 +96,19 @@ export const setGenderCtrl = async (ctx: Context, actionParams: Array) => {
         response.ok ? 'Gender saved' : `Error. ${response.data?.message}`,
         response.ok ? 'success' : 'error'
     );
+}
+
+export const userBirthdayCtrl = async (ctx: Context) => {
+    return await renderInputQuestion(
+        ctx,
+        'Please, enter your birthday in requested format YYYY-MM-DD (for example 2016-05-18):',
+        questions.info,
+        async (ctx) => {
+            const response = await updateUserBirthday(ctx, getMessageText(ctx))
+            return await renderMessage(
+                ctx,
+                response.ok ? 'Info saved' : `Error. ${response.data?.message}`,
+                response.ok ? 'success' : 'error'
+            );
+        });
 }
