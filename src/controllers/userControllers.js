@@ -10,9 +10,10 @@ import {
     updateGender,
     updateUserAbout,
     updateUserBirthday,
+    updateUserLocation,
     updateUserPhoto
 } from "../requests/requests.js";
-import {getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
+import {getMessageLocation, getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
 import {flowTypes} from "../consts/flow.js";
 import {icons} from "../consts/icons.js";
@@ -111,4 +112,13 @@ export const userBirthdayCtrl = async (ctx: Context) => {
                 response.ok ? 'success' : 'error'
             );
         });
+}
+
+export const userLocationCtrl = async (ctx: Context) => {
+    const response = await updateUserLocation(ctx, getMessageLocation(ctx))
+    return await renderMessage(
+        ctx,
+        response.ok ? 'Location updated' : `Error. ${response.data?.message}`,
+        response.ok ? 'success' : 'error'
+    );
 }

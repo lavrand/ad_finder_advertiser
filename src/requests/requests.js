@@ -85,6 +85,21 @@ export const updateUserBirthday = async (ctx: Context, birthday: string) => awai
     ctx
 });
 
+export const updateUserLocation = async (
+    ctx: Context,
+    location: {
+        type: "Point" | "LineString",
+        coordinates: {
+            latitude : {type: Number},
+            longitude : {type: Number}
+        }
+    }) => await sendRequest({
+    method: "PUT",
+    path: `user`,
+    body: {location},
+    ctx
+});
+
 export const updateUserPhoto = async (ctx: Context, photo: {
     file_id: string,
     file_unique_id: string,

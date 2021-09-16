@@ -19,7 +19,7 @@ import {
     setGenderCtrl,
     addPhotoCtrl,
     userPhotoCtrl,
-    photoGalleryCtrl, userBirthdayCtrl,
+    photoGalleryCtrl, userBirthdayCtrl, userLocationCtrl,
 } from "./controllers/userControllers.js";
 import {servicesCtrl} from "./controllers/serviceControllers.js";
 import {logger} from "./utils/logger.js";
@@ -32,7 +32,7 @@ const inputManager = QuestionManager.getInstance();
 bot.command('start', async (ctx: Context) =>  await renderMainMenu(ctx));
 
 bot.hears(/.*/, async (ctx: Context) => {
-    const {search, profile, ad, contacts, house, gender, man, woman, info, photo, birthday} = icons;
+    const {search, profile, ad, contacts, house, gender, man, woman, info, photo, birthday, location} = icons;
     const text = getMessageText(ctx);
     logger.log('HEAR:', text);
 
@@ -47,6 +47,10 @@ bot.hears(/.*/, async (ctx: Context) => {
     if (new RegExp(`^${birthday}.*`).test(text)) return await userBirthdayCtrl(ctx);
 
     if (inputManager.handleQuestion(ctx)) return;
+})
+
+bot.on('message', async ctx => {
+    if(ctx.message.location) { return await userLocationCtrl(ctx); }
 })
 
 bot.action(/.*/, async (ctx: Context) => {

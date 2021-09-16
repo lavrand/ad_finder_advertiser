@@ -7,7 +7,7 @@ export const renderProfileMenu = async (ctx: Context) => {
         .keyboard([
             [`${house} Go to main`, `${birthday} Birthday`],
             [`${photo} Photo`, `${gender} Gender`],
-            [`${info} About`, `${location} Location`],
+            [`${info} About`, Markup.button.locationRequest(`${location} Location`)],
             [`${ad} Services`]
         ])
         .oneTime()
