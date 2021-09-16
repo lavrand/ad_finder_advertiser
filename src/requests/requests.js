@@ -54,6 +54,12 @@ export const sendRequest = async (options: {
 
 export const fetchUser = async (ctx: Context) => await sendRequest({path: 'user', ctx});
 
+export const fetchUserPhotos = async (ctx: Context) => {
+    const res = await sendRequest({path: 'user', ctx});
+    res.data.photos = res.data.photos.filter(p => !p.deleted);
+    return res;
+}
+
 export const fetchBranches = async (ctx: Context) => await sendRequest({path: 'branch', ctx});
 
 export const fetchServices = async (ctx: Context, branchId: string) => await sendRequest({path: `service/${branchId}`, ctx});
@@ -84,6 +90,12 @@ export const updateUserBirthday = async (ctx: Context, birthday: string) => awai
     body: {birthday},
     ctx
 });
+
+export const deleteUserPhoto = async (ctx: Context, shortFileId: string) => await sendRequest({
+    method: "DELETE",
+    path: `user/photo/${shortFileId}`,
+    ctx
+})
 
 export const updateUserPhoto = async (ctx: Context, photo: {
     file_id: string,
