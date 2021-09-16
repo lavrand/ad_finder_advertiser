@@ -4,3 +4,6 @@
 ./node_modules
 ./.env
 ./.idea
+/lib/
+./lib
+/lib
