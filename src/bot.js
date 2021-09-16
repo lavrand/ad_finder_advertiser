@@ -19,7 +19,7 @@ import {
     setGenderCtrl,
     addPhotoCtrl,
     userPhotoCtrl,
-    photoGalleryCtrl,
+    photoGalleryCtrl, userBirthdayCtrl,
 } from "./controllers/userControllers.js";
 import {servicesCtrl} from "./controllers/serviceControllers.js";
 import {logger} from "./utils/logger.js";
@@ -32,7 +32,7 @@ const inputManager = QuestionManager.getInstance();
 bot.command('start', async (ctx: Context) =>  await renderMainMenu(ctx));
 
 bot.hears(/.*/, async (ctx: Context) => {
-    const {search, profile, ad, contacts, house, gender, man, woman, info, photo} = icons;
+    const {search, profile, ad, contacts, house, gender, man, woman, info, photo, birthday} = icons;
     const text = getMessageText(ctx);
     logger.log('HEAR:', text);
 
@@ -44,6 +44,7 @@ bot.hears(/.*/, async (ctx: Context) => {
     if (new RegExp(`^${gender}.*`).test(text)) return await genderCtrl(ctx)
     if (new RegExp(`^${info}.*`).test(text)) return await aboutCtrl(ctx);
     if (new RegExp(`^${photo}.*`).test(text)) return await userPhotoCtrl(ctx);
+    if (new RegExp(`^${birthday}.*`).test(text)) return await userBirthdayCtrl(ctx);
 
     if (inputManager.handleQuestion(ctx)) return;
 })

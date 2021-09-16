@@ -78,6 +78,13 @@ export const updateUserAbout = async (ctx: Context, about: string) => await send
     ctx
 });
 
+export const updateUserBirthday = async (ctx: Context, birthday: string) => await sendRequest({
+    method: "PUT",
+    path: `user`,
+    body: {birthday},
+    ctx
+});
+
 export const updateUserPhoto = async (ctx: Context, photo: {
     file_id: string,
     file_unique_id: string,
