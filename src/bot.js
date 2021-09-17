@@ -15,7 +15,7 @@ import {mainMenuCtrl, profileMenuCtrl} from "./controllers/menuControllers.js";
 import {
     genderCtrl,
     aboutCtrl,
-    setServiceCtrl,
+    setUserServiceCtrl,
     setGenderCtrl,
     addPhotoCtrl,
     userPhotoCtrl,
@@ -58,7 +58,7 @@ bot.action(/.*/, async (ctx: Context) => {
     logger.log('ACTION:', actionName, actionParams);
 
     if (actionName === actions.services) return await servicesCtrl(ctx, actionParams);
-    if (actionName === actions.selectService) return await setServiceCtrl(ctx, actionParams)
+    if (actionName === actions.selectService) return await setUserServiceCtrl(ctx, actionParams)
     if (actionName === actions.gender) return await setGenderCtrl(ctx, actionParams);
     if (actionName === actions.addPhotoList) return await addPhotoCtrl(ctx, actionParams);
     if (actionName === actions.photoGallery) return await photoGalleryCtrl(ctx, actionParams[0] || 0,true);

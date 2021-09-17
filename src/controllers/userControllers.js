@@ -6,19 +6,19 @@ import {renderClickableList} from "../components/clickable-list.js";
 import {renderInputQuestion} from "../components/input.js";
 import {
     addServiceToUser,
-    fetchUser,
     updateGender,
     updateUserAbout,
     updateUserBirthday,
     updateUserPhoto,
     fetchUserPhotos,
-    deleteUserPhoto
+    deleteUserPhoto, removeServiceFromUser
 } from "../requests/requests.js";
 import {getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
 import {flowTypes} from "../consts/flow.js";
 import {icons} from "../consts/icons.js";
 import {renderPhotoGallery} from "../components/photoGallery.js";
+import {REMOVE} from "../consts/req_actions.js";
 
 export const genderCtrl = async (ctx: Context) => {
     const {man, woman} = icons;
@@ -81,13 +81,13 @@ export const photoGalleryCtrl = async (ctx: Context, index: number=0, removable:
     }
 }
 
-export const setServiceCtrl = async (ctx: Context, actionParams: Array) => {
-    const [serviceId, flowType, postId] = actionParams;
+export const setUserServiceCtrl = async (ctx: Context, actionParams: Array) => {
+    const [serviceId, flowType, REQ_ACTION] = actionParams;
     if (flowType === flowTypes.sell) {
-        const {ok, data} = await addServiceToUser(ctx, serviceId);
+        const {ok, data} = REQ_ACTION === REMOVE ? await removeServiceFromUser(ctx, serviceId) : await addServiceToUser(ctx, serviceId);
         return await renderMessage(
             ctx,
-            ok ? 'Service added' : `Error. Service was not added (${data?.message})`,
+            ok ? `Service ${REQ_ACTION === REMOVE ? 'removed' : 'added'}` : `Error. ${data?.message}`,
             ok ? 'success' : 'error',
         );
     }
