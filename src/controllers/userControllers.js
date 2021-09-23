@@ -13,7 +13,7 @@ import {
     updateUserLocation,
     updateUserPhoto
 } from "../requests/requests.js";
-import {getMessageLocation, getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
+import {getPointLocation, getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
 import {flowTypes} from "../consts/flow.js";
 import {icons} from "../consts/icons.js";
@@ -115,7 +115,7 @@ export const userBirthdayCtrl = async (ctx: Context) => {
 }
 
 export const userLocationCtrl = async (ctx: Context) => {
-    const response = await updateUserLocation(ctx, getMessageLocation(ctx))
+    const response = await updateUserLocation(ctx, getPointLocation(ctx))
     return await renderMessage(
         ctx,
         response.ok ? 'Location updated' : `Error. ${response.data?.message}`,
