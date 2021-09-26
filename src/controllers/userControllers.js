@@ -11,7 +11,7 @@ import {
     updateUserBirthday,
     updateUserPhoto,
     fetchUserPhotos,
-    deleteUserPhoto, removeServiceFromUser
+    deleteUserPhoto, removeServiceFromUser, addContact
 } from "../requests/requests.js";
 import {getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
@@ -74,8 +74,8 @@ export const addPhotoCtrl = async (ctx: Context) => {
         });
 }
 
-export const photoGalleryCtrl = async (ctx: Context, index: number=0, removable: boolean) => {
-    const {ok, data} = await fetchUserPhotos(ctx);
+export const photoGalleryCtrl = async (ctx: Context, index: number=0, removable: boolean, userId?: string) => {
+    const {ok, data} = await fetchUserPhotos(ctx, userId || getUserId(ctx));
     if (ok) {
         return renderPhotoGallery(ctx, getUserId(ctx), data.photos, index, removable);
     }
@@ -116,4 +116,14 @@ export const userBirthdayCtrl = async (ctx: Context) => {
                 response.ok ? 'success' : 'error'
             );
         });
+}
+
+export const contactCtrl = async (ctx: Context, userId) => {
+    const {ok, data} = await addContact(ctx, userId);
+
+    return await renderMessage(
+        ctx,
+        ok ? 'Contact added' : `Error. ${data?.message || data}`,
+        ok ? 'success' : 'error'
+    );
 }

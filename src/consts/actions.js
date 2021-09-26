@@ -9,4 +9,5 @@ export const actions = {
     removePhotoList: 'remove-photo-list',
     photoGallery: 'show-photo-gallery',
     deletePhoto: 'delete-photo',
+    addContact: 'add-contact',
 };

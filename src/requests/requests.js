@@ -54,14 +54,31 @@ export const sendRequest = async (options: {
 
 export const fetchUser = async (ctx: Context) => await sendRequest({path: 'user', ctx});
 
+export const fetchUserById = async (ctx: Context, id: string) => await sendRequest({
+    path: `user/${id}`,
+    ctx,
+});
+
+export const addContact = async (ctx: Context, id: string) => await sendRequest({
+    path: `user/contact/${id}`,
+    ctx,
+    method: "POST",
+});
+
+export const removeContact = async (ctx: Context, id: string) => await sendRequest({
+    path: `user/contact/${id}`,
+    ctx,
+    method: "DELETE",
+});
+
 export const fetchUserServices = async (ctx: Context) => {
     const res = await sendRequest({path: 'user', ctx});
     res.data = res.data.services;
     return res;
 }
 
-export const fetchUserPhotos = async (ctx: Context) => {
-    const res = await sendRequest({path: 'user', ctx});
+export const fetchUserPhotos = async (ctx: Context, userId) => {
+    const res = await sendRequest({path: `user/${userId}`, ctx});
     res.data.photos = res.data.photos.filter(p => !p.deleted);
     return res;
 }
