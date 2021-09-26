@@ -64,7 +64,7 @@ bot.action(/.*/, async (ctx: Context) => {
     if (actionName === actions.addPhotoList) return await addPhotoCtrl(ctx, actionParams);
     if (actionName === actions.photoGallery) return await photoGalleryCtrl(ctx, actionParams[0] || 0,true);
     if (actionName === actions.deletePhoto) return await deletePhotoCtrl(ctx, actionParams[0]);
-    if (actionName === actions.addContact) return await contactCtrl(ctx, actionParams[0]);
+    if (actionName === actions.userCard) return await contactCtrl(ctx, actionParams[0]);
 
 })
 

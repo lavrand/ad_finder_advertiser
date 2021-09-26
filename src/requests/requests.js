@@ -3,7 +3,8 @@ import fetch from 'node-fetch';
 import {
     getMessageSenderId,
     getMessageSenderLang,
-    getMessageSenderUsername
+    getMessageSenderUsername,
+    getMessageSenderFirstName,
 } from "../utils/ctxHandlers.js";
 import Context from "telegraf";
 import {logger} from "../utils/logger.js";
@@ -21,12 +22,15 @@ export const sendRequest = async (options: {
     let headers = {};
     if (ctx) {
         headers['telegram_id'] = getMessageSenderId(ctx);
-        headers['user_name'] = getMessageSenderUsername(ctx);
+        headers['user_name'] = unescape(encodeURIComponent(getMessageSenderFirstName(ctx) || getMessageSenderUsername(ctx)));
         headers['user_lang'] = getMessageSenderLang(ctx);
     }
     const reqOptions = {
         method,
-        headers: {'Content-Type': 'application/json', ...headers}
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+        }
     };
     if (['POST', 'PUT'].includes(method) && body) {
         reqOptions.body = JSON.stringify(body);
@@ -57,18 +61,6 @@ export const fetchUser = async (ctx: Context) => await sendRequest({path: 'user'
 export const fetchUserById = async (ctx: Context, id: string) => await sendRequest({
     path: `user/${id}`,
     ctx,
-});
-
-export const addContact = async (ctx: Context, id: string) => await sendRequest({
-    path: `user/contact/${id}`,
-    ctx,
-    method: "POST",
-});
-
-export const removeContact = async (ctx: Context, id: string) => await sendRequest({
-    path: `user/contact/${id}`,
-    ctx,
-    method: "DELETE",
 });
 
 export const fetchUserServices = async (ctx: Context) => {
@@ -138,3 +130,11 @@ export const updateUserPhoto = async (ctx: Context, photo: {
     body: {photo},
     ctx
 });
+
+export const searchService = async (ctx: Context, serviceId: number, page: number=0) => {
+    return await sendRequest({
+        method: "GET",
+        path: `user/search/${serviceId}/${page}`,
+        ctx
+    })
+}

@@ -11,7 +11,9 @@ import {
     updateUserBirthday,
     updateUserPhoto,
     fetchUserPhotos,
-    deleteUserPhoto, removeServiceFromUser, addContact
+    deleteUserPhoto,
+    removeServiceFromUser,
+    searchService,
 } from "../requests/requests.js";
 import {getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
@@ -19,6 +21,7 @@ import {flowTypes} from "../consts/flow.js";
 import {icons} from "../consts/icons.js";
 import {renderPhotoGallery} from "../components/photoGallery.js";
 import {REMOVE} from "../consts/req_actions.js";
+import {renderSearchResult} from "../components/search-results.js";
 
 export const genderCtrl = async (ctx: Context) => {
     const {man, woman} = icons;
@@ -91,6 +94,14 @@ export const setUserServiceCtrl = async (ctx: Context, actionParams: Array) => {
             ok ? 'success' : 'error',
         );
     }
+    if (flowType === flowTypes.buy) {
+        const {ok, data} = await searchService(ctx,serviceId);
+        if (ok) {
+            return await renderSearchResult(ctx, data.users);
+        } else {
+            return await renderMessage(ctx, 'Search failed', 'error')
+        }
+    }
 }
 
 export const setGenderCtrl = async (ctx: Context, actionParams: Array) => {
@@ -118,12 +129,9 @@ export const userBirthdayCtrl = async (ctx: Context) => {
         });
 }
 
-export const contactCtrl = async (ctx: Context, userId) => {
-    const {ok, data} = await addContact(ctx, userId);
-
-    return await renderMessage(
-        ctx,
-        ok ? 'Contact added' : `Error. ${data?.message || data}`,
-        ok ? 'success' : 'error'
-    );
+export const contactCtrl = async (ctx: Context, telegramId: string) => {
+    console.log('CONTACT CONTROLLER', telegramId)
+    return await ctx.replyWithHTML(
+        `<a href="tg://user?id=${telegramId}">telegramId</a>`)
+    // return await renderMessage(ctx, `<a href="tg://user?id=${telegramId}">Link</a>`);
 }

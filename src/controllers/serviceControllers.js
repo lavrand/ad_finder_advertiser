@@ -22,7 +22,7 @@ export const servicesCtrl = async (ctx: Context, actionParams: Array) => {
             flowType === flowTypes.sell ? [service._id, flowType, toRemove ? REMOVE : ADD] : [service._id, flowType],
         );
 
-        return {title: `${service.name} ${toRemove ? '(-)' : '(+)'}`, action};
+        return {title: `${service.name} ${flowType === flowTypes.sell ? toRemove ? '(-)' : '(+)' : ''}`, action};
     });
     return await renderClickableList(ctx, 'Please, choose services', services);
 }
