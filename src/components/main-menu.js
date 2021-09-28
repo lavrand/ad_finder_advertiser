@@ -1,11 +1,13 @@
 import {Markup} from "telegraf";
 import {icons} from "../consts/icons.js";
+import {_} from "../utils/translator/translator.js"
+import {s} from "../utils/translator/strings.js";
 
 export const renderMainMenu = async (ctx) => {
-    const {search, profile, ad, contacts} = icons;
-    return await ctx.reply('Custom buttons keyboard', Markup
+    const {search, profile} = icons;
+    return await ctx.reply(_(s.main_menu_info), Markup
         .keyboard([
-            [`${search} Search`, `${profile} Profile`],
+            [`${search} ${_(s.search)}`, `${profile} ${_(s.profile)}`],
         ])
         .oneTime()
         .resize()

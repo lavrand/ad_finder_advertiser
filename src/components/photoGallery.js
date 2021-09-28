@@ -3,7 +3,8 @@ import {renderPhoto} from "./photo.js";
 import {renderClickableList} from "./clickable-list.js";
 import {createAction} from "../utils/actions.js";
 import {actions} from "../consts/actions.js";
-import {getUserId} from "../utils/ctxHandlers.js";
+import {_} from "../utils/translator/translator.js";
+import {s} from "../utils/translator/strings.js";
 
 export const renderPhotoGallery = async (
     ctx: Context,
@@ -26,17 +27,17 @@ export const renderPhotoGallery = async (
 
     const buttons = [];
     if (showPrevButton) buttons.push({
-        title: 'Prev',
+        title: _(s.delete),
         action: createAction(actions.photoGallery, [+currentIndex - 1])
     });
     if (removable) buttons.push({
-        title: 'Delete',
+        title: _(s.delete),
         action: createAction(actions.deletePhoto, [fileUniqueId])
     })
     if (showNextButton) buttons.push({
-        title: 'Next',
+        title: _(s.next),
         action: createAction(actions.photoGallery, [+currentIndex + 1])
     });
     await renderPhoto(ctx, fileId);
-    return await renderClickableList(ctx, 'Choose photo to delete', buttons)
+    return await renderClickableList(ctx, _(s.delete_photo_info), buttons)
 }

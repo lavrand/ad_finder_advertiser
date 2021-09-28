@@ -22,35 +22,38 @@ import {icons} from "../consts/icons.js";
 import {renderPhotoGallery} from "../components/photoGallery.js";
 import {REMOVE} from "../consts/req_actions.js";
 import {renderSearchResult} from "../components/search-results.js";
+import {gender} from "../consts/genders.js";
+import {_} from "../utils/translator/translator.js";
+import {s} from "../utils/translator/strings.js";
 
 export const genderCtrl = async (ctx: Context) => {
     const {man, woman} = icons;
     const genders = [
-        {title: `${man}`, action: createAction(actions.gender, ['male'])},
-        {title: `${woman}`, action: createAction(actions.gender, ['female'])},
+        {title: `${man}`, action: createAction(actions.gender, [gender.male])},
+        {title: `${woman}`, action: createAction(actions.gender, [gender.female])},
     ];
-    return await renderClickableList(ctx, 'Please, choose you gender', genders);
+    return await renderClickableList(ctx, _(s.gender_question), genders);
 }
 
 export const aboutCtrl = async (ctx: Context) => {
     return await renderInputQuestion(
         ctx,
-        'Please, write about your self couple of words',
+        _(s.about_question),
         questions.info,
         async (ctx) => {
             const response = await updateUserAbout(ctx, getMessageText(ctx));
             return await renderMessage(
                 ctx,
-                response.ok ? 'Info saved' : `Error. ${response.data?.message}`,
+                response.ok ? _(s.success) : `${_(s.error)}. ${response.data?.message}`,
                 response.ok ? 'success' : 'error'
             );
         });
 }
 
 export const userPhotoCtrl = async (ctx: Context) => {
-    return await renderClickableList(ctx, 'Choose operation', [
-        {title: 'Add Photo', action: createAction(actions.addPhotoList, [])},
-        {title: 'Delete Photo', action: createAction(actions.photoGallery, [0])},
+    return await renderClickableList(ctx, _(s.choose_action), [
+        {title: _(s.add_photo), action: createAction(actions.addPhotoList, [])},
+        {title: _(s.delete_photo), action: createAction(actions.photoGallery, [0])},
     ])
 }
 
@@ -58,7 +61,7 @@ export const deletePhotoCtrl = async (ctx: Context, fileId) => {
     const {ok, data} = await deleteUserPhoto(ctx, fileId);
     return await renderMessage(
         ctx,
-        ok ? 'Photo deleted' : 'Error',
+        ok ? _(s.photo_deleted) : _(s.error),
         ok ? 'success' : 'error',
     );
 }
@@ -66,13 +69,17 @@ export const deletePhotoCtrl = async (ctx: Context, fileId) => {
 export const addPhotoCtrl = async (ctx: Context) => {
     return await renderInputQuestion(
         ctx,
-        'Please, send photo',
+        _(s.photo_question),
         questions.photo,
         async ctx => {
             const photos = getPhoto(ctx);
             if (photos && photos.length > 0) {
                 const {ok, data} = await updateUserPhoto(ctx, photos[photos.length - 1]);
-                await renderMessage(ctx, ok ? 'Photo saved' : `Error. (${data?.message})`, ok ? 'success' : 'error');
+                await renderMessage(
+                    ctx,
+                    ok ? _(s.photo_saved) : `${_(s.error)}. (${data?.message})`,
+                    ok ? 'success' : 'error'
+                );
             }
         });
 }
@@ -90,7 +97,7 @@ export const setUserServiceCtrl = async (ctx: Context, actionParams: Array) => {
         const {ok, data} = REQ_ACTION === REMOVE ? await removeServiceFromUser(ctx, serviceId) : await addServiceToUser(ctx, serviceId);
         return await renderMessage(
             ctx,
-            ok ? `Service ${REQ_ACTION === REMOVE ? 'removed' : 'added'}` : `Error. ${data?.message}`,
+            ok ? `${REQ_ACTION === REMOVE ? _(s.service_deleted) : _(s.service_added)}` : `${_(s.error)}. ${data?.message}`,
             ok ? 'success' : 'error',
         );
     }
@@ -99,7 +106,7 @@ export const setUserServiceCtrl = async (ctx: Context, actionParams: Array) => {
         if (ok) {
             return await renderSearchResult(ctx, data.users);
         } else {
-            return await renderMessage(ctx, 'Search failed', 'error')
+            return await renderMessage(ctx, _(s.error), 'error')
         }
     }
 }
@@ -109,7 +116,7 @@ export const setGenderCtrl = async (ctx: Context, actionParams: Array) => {
     const response = await updateGender(ctx, gender);
     return await renderMessage(
         ctx,
-        response.ok ? 'Gender saved' : `Error. ${response.data?.message}`,
+        response.ok ? _(s.gender_saved) : `${_(s.error)}. ${response.data?.message}`,
         response.ok ? 'success' : 'error'
     );
 }
@@ -117,13 +124,13 @@ export const setGenderCtrl = async (ctx: Context, actionParams: Array) => {
 export const userBirthdayCtrl = async (ctx: Context) => {
     return await renderInputQuestion(
         ctx,
-        'Please, enter your birthday in requested format YYYY-MM-DD (for example 2016-05-18):',
+        _(s.gender_question),
         questions.info,
         async (ctx) => {
             const response = await updateUserBirthday(ctx, getMessageText(ctx))
             return await renderMessage(
                 ctx,
-                response.ok ? 'Info saved' : `Error. ${response.data?.message}`,
+                response.ok ? _(s.success) : `${_(s.error)}. ${response.data?.message}`,
                 response.ok ? 'success' : 'error'
             );
         });

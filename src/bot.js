@@ -26,11 +26,14 @@ import {
 } from "./controllers/userControllers.js";
 import {servicesCtrl} from "./controllers/serviceControllers.js";
 import {logger} from "./utils/logger.js";
+import {setLang} from "./utils/translator/translator.js";
 
 const env = process.env;
 export const bot = new Telegraf(env.TOKEN);
 
 const inputManager = QuestionManager.getInstance();
+
+setLang('ru');
 
 bot.command('start', async (ctx: Context) =>  await renderMainMenu(ctx));
 
