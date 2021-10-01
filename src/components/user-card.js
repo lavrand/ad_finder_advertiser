@@ -5,7 +5,7 @@ import {createAction} from "../utils/actions.js";
 import {actions} from "../consts/actions.js";
 import type {User} from "../utils/types";
 import {_} from "../utils/translator.js";
-import {s} from "../../strings.js";
+import {s} from "../../local-data/strings.js";
 import {calculateAge, calculateDistance, getProfileSettings} from "../utils/tools.js";
 
 export const renderUserCard = async (

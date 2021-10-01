@@ -7,5 +7,6 @@
 /lib/
 ./lib
 /lib
-./strings.js
-/strings.js
+./local-data
+/local-data/
+local-data

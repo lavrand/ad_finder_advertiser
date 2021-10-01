@@ -6,7 +6,7 @@ import {flowTypes} from "../consts/flow.js";
 import {renderClickableList} from "../components/clickable-list.js";
 import {ADD, REMOVE} from "../consts/req_actions.js";
 import {_} from "../utils/translator.js";
-import {s} from "../../strings.js";
+import {s} from "../../local-data/strings.js";
 
 export const servicesCtrl = async (ctx: Context, actionParams: Array) => {
     const [branchId, flowType] = actionParams;

@@ -4,7 +4,7 @@ import {renderLinkList} from "./link-list.js";
 import {getProfileSettings} from "../utils/tools.js";
 import {renderClickableList} from "./clickable-list.js";
 import {_} from "../utils/translator.js";
-import {s} from "../../strings.js";
+import {s} from "../../local-data/strings.js";
 import {createAction} from "../utils/actions.js";
 import {actions} from "../consts/actions.js";
 

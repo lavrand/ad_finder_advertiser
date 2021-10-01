@@ -4,7 +4,7 @@ import {renderClickableList} from "./clickable-list.js";
 import {createAction} from "../utils/actions.js";
 import {actions} from "../consts/actions.js";
 import {_} from "../utils/translator.js";
-import {s} from "../../strings.js";
+import {s} from "../../local-data/strings.js";
 
 export const renderPhotoGallery = async (
     ctx: Context,

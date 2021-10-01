@@ -4,7 +4,7 @@ import {actions} from "../consts/actions.js";
 import {renderClickableList} from "../components/clickable-list.js";
 import {Context} from "telegraf";
 import {_} from "../utils/translator.js";
-import {s} from "../../strings.js";
+import {s} from "../../local-data/strings.js";
 
 
 export const branchesCtrl = async (ctx: Context, flowType) => {

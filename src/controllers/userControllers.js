@@ -24,7 +24,7 @@ import {REMOVE} from "../consts/req_actions.js";
 import {renderSearchResult} from "../components/search-results.js";
 import {gender} from "../consts/genders.js";
 import {_} from "../utils/translator.js";
-import {s} from "../../strings.js";
+import {s} from "../../local-data/strings.js";
 
 export const genderCtrl = async (ctx: Context) => {
     const {man, woman} = icons;
