@@ -6,16 +6,16 @@ import {actions} from "../consts/actions.js";
 import type {User} from "../utils/types";
 import {_} from "../utils/translator.js";
 import {s} from "../../strings.js";
-import {calculateDistance, getProfileSettings} from "../utils/tools.js";
+import {calculateAge, calculateDistance, getProfileSettings} from "../utils/tools.js";
 
 export const renderUserCard = async (
         ctx: Context,
         data: User,
         isOwner: boolean,
     ) => {
-    const {contacts, photo} = icons;
+    const {photo} = icons;
     const {_id, telegramId, birthday, name, about='', lang, gender, rating} = data;
-    const age = birthday ? new Date().getFullYear() - birthday.getDate() : null; 
+    const age = calculateAge(birthday);
 
     const buttons = [];
 
@@ -30,8 +30,8 @@ export const renderUserCard = async (
         `
 <b>${name}</b>${gender && profileSettings.gender ? '('+gender+')':''}
 ${age && profileSettings.birthday ?` (${age} ${_(s.yo)})`:''}${lang?` ${_(s.language)} ${lang}`:''}
+${!isOwner ? calculateDistance() : ''}
 ${profileSettings.about ? about:''}
-${!isOwner && calculateDistance()}
 <a href="tg://user?id=${telegramId}">Click here to contact</a>
         `,
         buttons,

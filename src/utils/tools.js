@@ -19,3 +19,5 @@ export const calculateDistance = (
     // TODO
     return '10 km';
 }
+
+export const calculateAge = (birthday: Date) => birthday ? new Date().getFullYear() - birthday.getDate() : null;
