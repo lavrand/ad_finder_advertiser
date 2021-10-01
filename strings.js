@@ -79,6 +79,10 @@ export const s = {
     en: 'choose branch',
     ru: 'choose branch',
   },
+  choose_user: {
+    en: 'choose user',
+    ru: 'choose user',
+  },
   choose_service: {
     en: 'choose service',
     ru: 'choose service',

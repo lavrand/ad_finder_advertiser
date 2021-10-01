@@ -5,8 +5,9 @@ import {renderUserCard} from "../components/user-card.js";
 import {fetchUserById, fetchUser} from "../requests/requests.js";
 
 export const mainMenuCtrl = async (ctx: Context) => await renderMainMenu(ctx);
-export const profileMenuCtrl = async (ctx: Context, userId) => {
+export const profileMenuCtrl = async (ctx: Context, userId: string) => {
     const {ok, data} = userId ? await fetchUserById(ctx, userId) : await fetchUser(ctx)
+    const isOwner = !userId;
     await renderUserCard(
         ctx,
         {
@@ -19,6 +20,10 @@ export const profileMenuCtrl = async (ctx: Context, userId) => {
             lang: data.lang,
             rating: data.rating,
             services: data.services,
-        });
-    return await renderProfileMenu(ctx);
+        },
+        isOwner
+    );
+    if (isOwner) {
+        await renderProfileMenu(ctx, !!userId);
+    }
 }

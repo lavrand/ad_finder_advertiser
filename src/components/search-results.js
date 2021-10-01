@@ -1,16 +1,25 @@
 import {Context} from "telegraf";
 import type {User} from "../utils/types.js";
 import {renderLinkList} from "./link-list.js";
+import {getProfileSettings} from "../utils/tools.js";
+import {renderClickableList} from "./clickable-list.js";
+import {_} from "../utils/translator.js";
+import {s} from "../../strings.js";
+import {createAction} from "../utils/actions.js";
+import {actions} from "../consts/actions.js";
 
 export const renderSearchResult = async (
     ctx: Context,
-    list: Array<User>,
+    users: Array<User>,
     serviceId: string,
     cursor: number) => {
-    const links = list.map(user => ({
-        title: user.name,
-        href: `tg://user?id=${user.telegramId}`
+
+    const profileSettings = getProfileSettings();
+
+    const buttons = users.map(user => ({
+        title: `${user.name}`,
+        action: createAction(actions.profile, [user._id])
     }));
-    await renderLinkList(ctx, links);
+    await renderClickableList(ctx, _(s.choose_user),  buttons);
     // TODO 'more' button
 }

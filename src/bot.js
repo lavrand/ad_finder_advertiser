@@ -26,9 +26,9 @@ import {
 } from "./controllers/userControllers.js";
 import {servicesCtrl} from "./controllers/serviceControllers.js";
 import {logger} from "./utils/logger.js";
-import {setLang} from "./utils/translator/translator.js";
+import {setLang} from "./utils/translator.js";
 
-const env = process.env;
+export const env = process.env;
 export const bot = new Telegraf(env.TOKEN);
 
 const inputManager = QuestionManager.getInstance();
@@ -68,6 +68,7 @@ bot.action(/.*/, async (ctx: Context) => {
     if (actionName === actions.photoGallery) return await photoGalleryCtrl(ctx, actionParams[0] || 0,true);
     if (actionName === actions.deletePhoto) return await deletePhotoCtrl(ctx, actionParams[0]);
     if (actionName === actions.userCard) return await contactCtrl(ctx, actionParams[0]);
+    if (actionName === actions.profile) return await profileMenuCtrl (ctx, actionParams[0]);
 
 })
 

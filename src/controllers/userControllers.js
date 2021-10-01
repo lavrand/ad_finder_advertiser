@@ -23,8 +23,8 @@ import {renderPhotoGallery} from "../components/photoGallery.js";
 import {REMOVE} from "../consts/req_actions.js";
 import {renderSearchResult} from "../components/search-results.js";
 import {gender} from "../consts/genders.js";
-import {_} from "../utils/translator/translator.js";
-import {s} from "../utils/translator/strings.js";
+import {_} from "../utils/translator.js";
+import {s} from "../../strings.js";
 
 export const genderCtrl = async (ctx: Context) => {
     const {man, woman} = icons;

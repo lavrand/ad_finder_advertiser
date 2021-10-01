@@ -1,7 +1,7 @@
 import {Markup} from "telegraf";
 import {icons} from "../consts/icons.js";
-import {_} from "../utils/translator/translator.js"
-import {s} from "../utils/translator/strings.js";
+import {_} from "../utils/translator.js"
+import {s} from "../../strings.js";
 
 export const renderMainMenu = async (ctx) => {
     const {search, profile} = icons;

@@ -14,5 +14,5 @@ export const renderClickableList = async (
         result.push(render.slice(i, i + chunkSize));
     }
 
-    return ctx.reply(title, Markup.inlineKeyboard(result).oneTime().resize());
+    return ctx.replyWithHTML(title, Markup.inlineKeyboard(result).oneTime().resize());
 }

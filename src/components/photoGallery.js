@@ -3,8 +3,8 @@ import {renderPhoto} from "./photo.js";
 import {renderClickableList} from "./clickable-list.js";
 import {createAction} from "../utils/actions.js";
 import {actions} from "../consts/actions.js";
-import {_} from "../utils/translator/translator.js";
-import {s} from "../utils/translator/strings.js";
+import {_} from "../utils/translator.js";
+import {s} from "../../strings.js";
 
 export const renderPhotoGallery = async (
     ctx: Context,
@@ -27,7 +27,7 @@ export const renderPhotoGallery = async (
 
     const buttons = [];
     if (showPrevButton) buttons.push({
-        title: _(s.delete),
+        title: _(s.prev),
         action: createAction(actions.photoGallery, [+currentIndex - 1])
     });
     if (removable) buttons.push({
