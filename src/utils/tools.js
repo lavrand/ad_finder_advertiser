@@ -1,4 +1,5 @@
 import {env} from "../bot.js";
+import {logger} from "./logger.js";
 
 export const getProfileSettings = () => {
     const envSettings = JSON.parse(env.PROFILE_SETTINGS || '{}');
@@ -21,3 +22,13 @@ export const calculateDistance = (
 }
 
 export const calculateAge = (birthday: Date) => birthday ? new Date().getFullYear() - birthday.getDate() : null;
+
+export const loggerDecorator = (handler) => {
+    return function (...args) {
+        try {
+            handler(...args);
+        } catch (err) {
+            logger.error({err, ...args});
+        }
+    }
+}
