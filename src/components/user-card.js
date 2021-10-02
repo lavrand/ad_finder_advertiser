@@ -19,7 +19,6 @@ export const renderUserCard = async (
     const buttons = [];
 
     const profileSettings = getProfileSettings();
-    console.log('>>><<<', data)
     if (profileSettings.photo) buttons.push({
         title: `${photo} ${_(s.photos)}`,
         action: createAction(actions.photoGallery, [0, true, _id])
@@ -30,7 +29,7 @@ export const renderUserCard = async (
     let html = `<b>${name}</b>${sex && profileSettings.gender ? '('+sex+')': ''}`;
     if (age && profileSettings.birthday) html += `\n(${age} ${_(s.yo)})`;
     if (lang) html +=  `\n${_(s.language)} ${lang}`;
-    if (!isOwner) html += calculateDistance();
+    if (!isOwner) html += `\n${calculateDistance()}`;
     if (services) html += `\n\n<b>Services:</b>\n${services}`;
     if (profileSettings.about && about) html += `\n\n${about}`;
     if (!isOwner) html += `\n\n<a href="tg://user?id=${telegramId}">Click here to contact</a>`;
