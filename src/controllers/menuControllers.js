@@ -8,19 +8,10 @@ export const mainMenuCtrl = async (ctx: Context) => await renderMainMenu(ctx);
 export const profileMenuCtrl = async (ctx: Context, userId: string) => {
     const {ok, data} = userId ? await fetchUserById(ctx, userId) : await fetchUser(ctx)
     const isOwner = !userId;
+
     await renderUserCard(
         ctx,
-        {
-            id: data._id,
-            name: data.name,
-            telegramId: data.telegramId,
-            gender: data.sex,
-            birthday: data.birthday && new Date(data.birthday),
-            about: data.about,
-            lang: data.lang,
-            rating: data.rating,
-            services: data.services,
-        },
+        data,
         isOwner
     );
     if (isOwner) {

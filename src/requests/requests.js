@@ -70,7 +70,7 @@ export const fetchUserServices = async (ctx: Context) => {
 }
 
 export const fetchUserPhotos = async (ctx: Context, userId) => {
-    const res = await sendRequest({path: `user/${userId}`, ctx});
+    const res = !userId ? await sendRequest({path: 'user', ctx}) : await sendRequest({path: `user/${userId}`, ctx});
     res.data.photos = res.data.photos.filter(p => !p.deleted);
     return res;
 }

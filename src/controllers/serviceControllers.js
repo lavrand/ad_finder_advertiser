@@ -5,7 +5,7 @@ import {actions} from "../consts/actions.js";
 import {flowTypes} from "../consts/flow.js";
 import {renderClickableList} from "../components/clickable-list.js";
 import {ADD, REMOVE} from "../consts/req_actions.js";
-import {_} from "../utils/translator.js";
+import {_, getServiceTranslation} from "../utils/translator.js";
 import {s} from "../../local-data/strings.js";
 
 export const servicesCtrl = async (ctx: Context, actionParams: Array) => {
@@ -24,7 +24,7 @@ export const servicesCtrl = async (ctx: Context, actionParams: Array) => {
             flowType === flowTypes.sell ? [service._id, flowType, toRemove ? REMOVE : ADD] : [service._id, flowType],
         );
 
-        return {title: `${service.name} ${flowType === flowTypes.sell ? toRemove ? `(${_(s.add)})` : `(${_(s.delete)})` : ''}`, action};
+        return {title: `${getServiceTranslation(service)} ${flowType === flowTypes.sell ? toRemove ? `(${_(s.add)})` : `(${_(s.delete)})` : ''}`, action};
     });
     return await renderClickableList(ctx, _(s.choose_service), services, 2);
 }

@@ -15,7 +15,7 @@ import {
     removeServiceFromUser,
     searchService,
 } from "../requests/requests.js";
-import {getMessageText, getPhoto, getUserId} from "../utils/ctxHandlers.js";
+import {getMessageText, getPhoto, getUserTelegramId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
 import {flowTypes} from "../consts/flow.js";
 import {icons} from "../consts/icons.js";
@@ -84,10 +84,11 @@ export const addPhotoCtrl = async (ctx: Context) => {
         });
 }
 
-export const photoGalleryCtrl = async (ctx: Context, index: number=0, removable: boolean, userId?: string) => {
-    const {ok, data} = await fetchUserPhotos(ctx, userId || getUserId(ctx));
+export const photoGalleryCtrl = async (ctx: Context, actionParams: Array) => {
+    let [index, removable, userId] = actionParams;
+    const {ok, data} = await fetchUserPhotos(ctx, userId);
     if (ok) {
-        return renderPhotoGallery(ctx, getUserId(ctx), data.photos, index, removable);
+        return renderPhotoGallery(ctx, getUserTelegramId(ctx), data.photos, index, removable);
     }
 }
 
@@ -137,7 +138,6 @@ export const userBirthdayCtrl = async (ctx: Context) => {
 }
 
 export const contactCtrl = async (ctx: Context, telegramId: string) => {
-    console.log('CONTACT CONTROLLER', telegramId)
     return await ctx.replyWithHTML(
         `<a href="tg://user?id=${telegramId}">telegramId</a>`)
     // return await renderMessage(ctx, `<a href="tg://user?id=${telegramId}">Link</a>`);

@@ -65,7 +65,7 @@ bot.action(/.*/, async (ctx: Context) => {
     if (actionName === actions.selectService) return await setUserServiceCtrl(ctx, actionParams)
     if (actionName === actions.gender) return await setGenderCtrl(ctx, actionParams);
     if (actionName === actions.addPhotoList) return await addPhotoCtrl(ctx, actionParams);
-    if (actionName === actions.photoGallery) return await photoGalleryCtrl(ctx, actionParams[0] || 0,true);
+    if (actionName === actions.photoGallery) return await photoGalleryCtrl(ctx, actionParams);
     if (actionName === actions.deletePhoto) return await deletePhotoCtrl(ctx, actionParams[0]);
     if (actionName === actions.userCard) return await contactCtrl(ctx, actionParams[0]);
     if (actionName === actions.profile) return await profileMenuCtrl (ctx, actionParams[0]);
