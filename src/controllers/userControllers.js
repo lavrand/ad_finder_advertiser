@@ -16,7 +16,7 @@ import {
     removeServiceFromUser,
     searchService,
 } from "../requests/requests.js";
-import {getMessageText, getPhoto, getUserTelegramId} from "../utils/ctxHandlers.js";
+import {getMessageText, getPhoto, getPointLocation, getUserTelegramId} from "../utils/ctxHandlers.js";
 import {renderMessage} from "../components/message.js";
 import {flowTypes} from "../consts/flow.js";
 import {icons} from "../consts/icons.js";
@@ -26,7 +26,6 @@ import {renderSearchResult} from "../components/search-results.js";
 import {gender} from "../consts/genders.js";
 import {_} from "../utils/translator.js";
 import {s} from "../../local-data/strings.js";
-import {getPointLocation} from "../../lib/utils/ctxHandlers";
 
 export const genderCtrl = async (ctx: Context) => {
     const {man, woman} = icons;
