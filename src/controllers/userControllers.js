@@ -88,7 +88,7 @@ export const photoGalleryCtrl = async (ctx: Context, actionParams: Array) => {
     let [index, removable, userId] = actionParams;
     const {ok, data} = await fetchUserPhotos(ctx, userId);
     if (ok) {
-        return renderPhotoGallery(ctx, getUserTelegramId(ctx), data.photos, index, removable);
+        return renderPhotoGallery(ctx, userId, data.photos, index, removable);
     }
 }
 

@@ -26,8 +26,9 @@ import {
 } from "./controllers/userControllers.js";
 import {servicesCtrl} from "./controllers/serviceControllers.js";
 import {logger} from "./utils/logger.js";
-import {setLang} from "./utils/translator.js";
-import {loggerDecorator} from "./utils/tools.js";
+import {_, setLang} from "./utils/translator.js";
+import {renderMessage} from "./components/message.js";
+import {s} from "../local-data/strings.js";
 
 export const env = process.env;
 export const bot = new Telegraf(env.TOKEN);
@@ -36,9 +37,9 @@ const inputManager = QuestionManager.getInstance();
 
 setLang(env.PREF_LANG);
 
-bot.command('start', loggerDecorator(async (ctx: Context) =>  await renderMainMenu(ctx)));
+bot.command('start', async (ctx: Context) =>  await renderMainMenu(ctx));
 
-bot.hears(/.*/, loggerDecorator(async (ctx: Context) => {
+bot.hears(/.*/, async (ctx: Context) => {
     const {search, profile, ad, contacts, house, gender, man, woman, info, photo, birthday} = icons;
     const text = getMessageText(ctx);
     logger.log('HEAR:', text);
@@ -54,9 +55,9 @@ bot.hears(/.*/, loggerDecorator(async (ctx: Context) => {
     if (new RegExp(`^${birthday}.*`).test(text)) return await userBirthdayCtrl(ctx);
 
     if (inputManager.handleQuestion(ctx)) return;
-}));
+});
 
-bot.action(/.*/, loggerDecorator(async (ctx: Context) => {
+bot.action(/.*/, async (ctx: Context) => {
     const action = getAction(ctx);
     const actionName = getActionName(action);
     const actionParams = getActionParams(action);
@@ -70,10 +71,23 @@ bot.action(/.*/, loggerDecorator(async (ctx: Context) => {
     if (actionName === actions.deletePhoto) return await deletePhotoCtrl(ctx, actionParams[0]);
     if (actionName === actions.userCard) return await contactCtrl(ctx, actionParams[0]);
     if (actionName === actions.profile) return await profileMenuCtrl (ctx, actionParams[0]);
-}))
+});
 
-bot.on('message', loggerDecorator((ctx: Context) => {
+bot.on('message', (ctx: Context) => {
     if (inputManager.handleQuestion(ctx)) return;
-}))
+});
 
 bot.launch().then(() => logger.log("Bot started.") ).catch(logger.log);
+
+bot.catch(async (err, ctx: Context) => {
+    logger.error({ctx, err});
+    await renderMessage(ctx, _(s.unexpected_error), 'error');
+})
+
+process.on('unhandledRejection', (err: Error, promise: Promise<any>) => {
+    logger.error({err});
+});
+
+process.on('uncaughtException', function(err) {
+    logger.error({err});
+});

@@ -1,5 +1,10 @@
 import {env} from "../bot.js";
 import {logger} from "./logger.js";
+import {Context} from "telegraf";
+import {sendRequest} from "../requests/requests.js";
+import {renderMessage} from "../components/message.js";
+import {_} from "./translator.js";
+import {s} from "../../local-data/strings.js";
 
 export const getProfileSettings = () => {
     const envSettings = JSON.parse(env.PROFILE_SETTINGS || '{}');
@@ -22,13 +27,3 @@ export const calculateDistance = (
 }
 
 export const calculateAge = (birthday: Date) => birthday ? new Date().getFullYear() - birthday.getDate() : null;
-
-export const loggerDecorator = (handler) => {
-    return function (...args) {
-        try {
-            handler(...args);
-        } catch (err) {
-            logger.error({err, ...args});
-        }
-    }
-}
