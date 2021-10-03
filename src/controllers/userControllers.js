@@ -12,6 +12,7 @@ import {
     updateUserPhoto,
     fetchUserPhotos,
     deleteUserPhoto,
+    updateUserLocation,
     removeServiceFromUser,
     searchService,
 } from "../requests/requests.js";
@@ -137,8 +138,18 @@ export const userBirthdayCtrl = async (ctx: Context) => {
         });
 }
 
+export const userLocationCtrl = async (ctx: Context) => {
+    const response = await updateUserLocation(ctx, getPointLocation(ctx))
+    return await renderMessage(
+        ctx,
+        response.ok ? 'Location updated' : `Error. ${response.data?.message}`,
+        response.ok ? 'success' : 'error'
+    );
+}
+
 export const contactCtrl = async (ctx: Context, telegramId: string) => {
     return await ctx.replyWithHTML(
         `<a href="tg://user?id=${telegramId}">telegramId</a>`)
     // return await renderMessage(ctx, `<a href="tg://user?id=${telegramId}">Link</a>`);
 }
+

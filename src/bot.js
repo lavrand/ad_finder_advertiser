@@ -22,6 +22,7 @@ import {
     photoGalleryCtrl,
     userBirthdayCtrl,
     deletePhotoCtrl,
+    userLocationCtrl,
     contactCtrl,
 } from "./controllers/userControllers.js";
 import {servicesCtrl} from "./controllers/serviceControllers.js";
@@ -40,7 +41,7 @@ setLang();
 bot.command('start', async (ctx: Context) =>  await renderMainMenu(ctx));
 
 bot.hears(/.*/, async (ctx: Context) => {
-    const {search, profile, ad, contacts, house, gender, man, woman, info, photo, birthday} = icons;
+    const {search, profile, ad, contacts, house, gender, man, woman, info, photo, birthday, location} = icons;
     const text = getMessageText(ctx);
     logger.log('HEAR:', text);
 
@@ -56,6 +57,10 @@ bot.hears(/.*/, async (ctx: Context) => {
 
     if (inputManager.handleQuestion(ctx)) return;
 });
+
+bot.on('message', async ctx => {
+    if(ctx.message.location) { return await userLocationCtrl(ctx); }
+})
 
 bot.action(/.*/, async (ctx: Context) => {
     const action = getAction(ctx);

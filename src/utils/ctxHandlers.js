@@ -12,3 +12,4 @@ export const getPhoto = (ctx: Context) => getMessage(ctx)?.photo;
 export const getMessageSenderFirstName = (ctx: Context) => getMessageSender(ctx)?.first_name;
 export const getMessageSenderUsername = (ctx: Context) => getMessageSender(ctx)?.username;
 export const getMessageSenderLang = (ctx: Context) => getMessageSender(ctx)?.language_code;
+export const getPointLocation = (ctx: Context) => ({type: "Point", coordinates: {...getMessage(ctx)?.location}});
