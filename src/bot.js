@@ -35,7 +35,7 @@ export const bot = new Telegraf(env.TOKEN);
 
 const inputManager = QuestionManager.getInstance();
 
-setLang(env.PREF_LANG);
+setLang();
 
 bot.command('start', async (ctx: Context) =>  await renderMainMenu(ctx));
 

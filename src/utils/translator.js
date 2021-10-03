@@ -1,8 +1,12 @@
 import type {Branch, Service} from "./types.js";
+import {env} from "../bot.js";
 
-let LANG = 'ru';
+let LANG;
 
-export const setLang = (lang: 'en'|'ru') => LANG = lang;
+export const setLang = (lang?: string) => {
+    LANG = env.PREF_LANG;
+    if (lang && lang.match(/.*en.*/)) LANG = 'en';
+}
 
 export const getLang = () => LANG;
 
