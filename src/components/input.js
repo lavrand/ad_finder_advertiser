@@ -1,6 +1,6 @@
 // @flow
 import {Context} from "telegraf";
-import {getUserId} from "../utils/ctxHandlers.js";
+import {getUserTelegramId} from "../utils/ctxHandlers.js";
 import {logger} from "../utils/logger.js";
 
 export const renderInputQuestion = async (
@@ -10,7 +10,7 @@ export const renderInputQuestion = async (
     handler: Function<Context> = () => null
 ) => {
     const inputManager = QuestionManager.getInstance();
-    inputManager.setUserQuestion(getUserId(ctx), questionId, handler);
+    inputManager.setUserQuestion(getUserTelegramId(ctx), questionId, handler);
     await ctx.reply(text);
 }
 
@@ -88,7 +88,7 @@ export class QuestionManager { // SINGLETON
     }
 
     handleQuestion(ctx: Context) {
-        const userID = getUserId(ctx);
+        const userID = getUserTelegramId(ctx);
         const userQuestion = this.getAndRemoveUserQuestion(userID);
         if (userQuestion && userQuestion.handler) {
             userQuestion.handler(ctx);

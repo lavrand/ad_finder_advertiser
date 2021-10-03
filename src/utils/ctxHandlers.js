@@ -7,7 +7,7 @@ export const getMessageSender = (ctx: Context) => getMessage(ctx)?.from || getCa
 export const getMessageSenderId = (ctx: Context) => getMessageSender(ctx)?.id;
 export const getMessageChat = (ctx: Context) => getMessage(ctx)?.chat;
 export const getAction = (ctx: Context) => ctx.update?.callback_query?.data;
-export const getUserId = (ctx: Context) => getMessage(ctx)?.from?.id || getCallbackQuery(ctx)?.from?.id;
+export const getUserTelegramId = (ctx: Context) => getMessage(ctx)?.from?.id || getCallbackQuery(ctx)?.from?.id;
 export const getPhoto = (ctx: Context) => getMessage(ctx)?.photo;
 export const getMessageSenderFirstName = (ctx: Context) => getMessageSender(ctx)?.first_name;
 export const getMessageSenderUsername = (ctx: Context) => getMessageSender(ctx)?.username;

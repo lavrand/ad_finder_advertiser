@@ -15,19 +15,28 @@ import {mainMenuCtrl, profileMenuCtrl} from "./controllers/menuControllers.js";
 import {
     genderCtrl,
     aboutCtrl,
-    setServiceCtrl,
+    setUserServiceCtrl,
     setGenderCtrl,
     addPhotoCtrl,
     userPhotoCtrl,
-    photoGalleryCtrl, userBirthdayCtrl, userLocationCtrl,
+    photoGalleryCtrl,
+    userBirthdayCtrl,
+    deletePhotoCtrl,
+    userLocationCtrl,
+    contactCtrl,
 } from "./controllers/userControllers.js";
 import {servicesCtrl} from "./controllers/serviceControllers.js";
 import {logger} from "./utils/logger.js";
+import {_, setLang} from "./utils/translator.js";
+import {renderMessage} from "./components/message.js";
+import {s} from "../local-data/strings.js";
 
-const env = process.env;
+export const env = process.env;
 export const bot = new Telegraf(env.TOKEN);
 
 const inputManager = QuestionManager.getInstance();
+
+setLang();
 
 bot.command('start', async (ctx: Context) =>  await renderMainMenu(ctx));
 
@@ -47,7 +56,7 @@ bot.hears(/.*/, async (ctx: Context) => {
     if (new RegExp(`^${birthday}.*`).test(text)) return await userBirthdayCtrl(ctx);
 
     if (inputManager.handleQuestion(ctx)) return;
-})
+});
 
 bot.on('message', async ctx => {
     if(ctx.message.location) { return await userLocationCtrl(ctx); }
@@ -60,18 +69,30 @@ bot.action(/.*/, async (ctx: Context) => {
     logger.log('ACTION:', actionName, actionParams);
 
     if (actionName === actions.services) return await servicesCtrl(ctx, actionParams);
-    if (actionName === actions.selectService) return await setServiceCtrl(ctx, actionParams)
+    if (actionName === actions.selectService) return await setUserServiceCtrl(ctx, actionParams)
     if (actionName === actions.gender) return await setGenderCtrl(ctx, actionParams);
     if (actionName === actions.addPhotoList) return await addPhotoCtrl(ctx, actionParams);
-    if (actionName === actions.removePhotoList) return await photoGalleryCtrl(ctx, true);
-})
+    if (actionName === actions.photoGallery) return await photoGalleryCtrl(ctx, actionParams);
+    if (actionName === actions.deletePhoto) return await deletePhotoCtrl(ctx, actionParams[0]);
+    if (actionName === actions.userCard) return await contactCtrl(ctx, actionParams[0]);
+    if (actionName === actions.profile) return await profileMenuCtrl (ctx, actionParams[0]);
+});
 
 bot.on('message', (ctx: Context) => {
     if (inputManager.handleQuestion(ctx)) return;
-})
-
-bot.on('photo', (ctx: Context) => {
-    logger.log('>>>>>>>>>>>', ctx)
-})
+});
 
 bot.launch().then(() => logger.log("Bot started.") ).catch(logger.log);
+
+bot.catch(async (err, ctx: Context) => {
+    logger.error({ctx, err});
+    await renderMessage(ctx, _(s.unexpected_error), 'error');
+})
+
+process.on('unhandledRejection', (err: Error, promise: Promise<any>) => {
+    logger.error({err});
+});
+
+process.on('uncaughtException', function(err) {
+    logger.error({err});
+});

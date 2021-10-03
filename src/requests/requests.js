@@ -3,7 +3,8 @@ import fetch from 'node-fetch';
 import {
     getMessageSenderId,
     getMessageSenderLang,
-    getMessageSenderUsername
+    getMessageSenderUsername,
+    getMessageSenderFirstName,
 } from "../utils/ctxHandlers.js";
 import Context from "telegraf";
 import {logger} from "../utils/logger.js";
@@ -21,12 +22,15 @@ export const sendRequest = async (options: {
     let headers = {};
     if (ctx) {
         headers['telegram_id'] = getMessageSenderId(ctx);
-        headers['user_name'] = getMessageSenderUsername(ctx);
+        headers['user_name'] = unescape(encodeURIComponent(getMessageSenderFirstName(ctx) || getMessageSenderUsername(ctx)));
         headers['user_lang'] = getMessageSenderLang(ctx);
     }
     const reqOptions = {
         method,
-        headers: {'Content-Type': 'application/json', ...headers}
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+        }
     };
     if (['POST', 'PUT'].includes(method) && body) {
         reqOptions.body = JSON.stringify(body);
@@ -54,12 +58,35 @@ export const sendRequest = async (options: {
 
 export const fetchUser = async (ctx: Context) => await sendRequest({path: 'user', ctx});
 
+export const fetchUserById = async (ctx: Context, id: string) => await sendRequest({
+    path: `user/${id}`,
+    ctx,
+});
+
+export const fetchUserServices = async (ctx: Context) => {
+    const res = await sendRequest({path: 'user', ctx});
+    res.data = res.data.services;
+    return res;
+}
+
+export const fetchUserPhotos = async (ctx: Context, userId) => {
+    const res = !userId ? await sendRequest({path: 'user', ctx}) : await sendRequest({path: `user/${userId}`, ctx});
+    res.data.photos = res.data.photos.filter(p => !p.deleted);
+    return res;
+}
+
 export const fetchBranches = async (ctx: Context) => await sendRequest({path: 'branch', ctx});
 
 export const fetchServices = async (ctx: Context, branchId: string) => await sendRequest({path: `service/${branchId}`, ctx});
 
 export const addServiceToUser = async (ctx: Context, serviceId: string) => await sendRequest({
     method: "POST",
+    path: `user/service/${serviceId}`,
+    ctx
+});
+
+export const removeServiceFromUser = async (ctx: Context, serviceId: string) => await sendRequest({
+    method: "DELETE",
     path: `user/service/${serviceId}`,
     ctx
 });
@@ -100,6 +127,13 @@ export const updateUserLocation = async (
     ctx
 });
 
+export const deleteUserPhoto = async (ctx: Context, shortFileId: string) => await sendRequest({
+    method: "DELETE",
+    path: `user/photo/${shortFileId}`,
+    ctx
+})
+
+
 export const updateUserPhoto = async (ctx: Context, photo: {
     file_id: string,
     file_unique_id: string,
@@ -112,3 +146,11 @@ export const updateUserPhoto = async (ctx: Context, photo: {
     body: {photo},
     ctx
 });
+
+export const searchService = async (ctx: Context, serviceId: number, page: number=0) => {
+    return await sendRequest({
+        method: "GET",
+        path: `user/search/${serviceId}/${page}`,
+        ctx
+    })
+}
